@@ -1,5 +1,29 @@
 <div>
   <h3>{{ playlist.name }}</h3>
+  
+  <!-- Add Playlist -->
+ <div class="well">
+  <form name="songAdder" class="form-horizontal" ng-submit="songSubmit()">
+    <fieldset>
+      <legend>Add to Playlist</legend>
+      <div class="form-group">
+        <label class="col-xs-2 control-label">Song</label>
+        <div class="col-xs-10">
+			<select name ="songSelect" ng-model="songSelector" ng-options="optionSong as optionSong.name for optionSong in allSongs"></select>
+        	<!-- $scope.songSelector -->
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-xs-10 col-xs-offset-2">
+          <button type="submit" class="btn btn-success">Add Song</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</div>
+
+
+  <!-- Table of Songs -->
   <table class='table' ng-show="playlist.songs.length">
     <thead>
       <tr>

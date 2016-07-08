@@ -1,4 +1,4 @@
-juke.controller("playlistCtrl", function($scope, $log, PlaylistFactory) {
+juke.controller("playlistCtrl", function($scope, $log, PlaylistFactory, $state, $stateParams) {
 	 
 	$scope.playlistSubmit = function () {
 		if ($scope.newPlaylist.$valid) {
@@ -7,8 +7,12 @@ juke.controller("playlistCtrl", function($scope, $log, PlaylistFactory) {
 			var newPlaylist = {
 				name: $scope.playlistName
 			}
+			var playID;
+			PlaylistFactory.create(newPlaylist)
+				.then (response => {
+					$state.go('singlePlaylist', {playlistId: response.id})
+				})
 			
-			PlaylistFactory.create(newPlaylist);	
 		}
 		else if ($scope.newPlaylist.$invalid) {
 			console.log("invalid!")
@@ -18,6 +22,16 @@ juke.controller("playlistCtrl", function($scope, $log, PlaylistFactory) {
 });
 
 
-juke.controller("singlePlaylistCtrl", function($scope, $log, PlaylistFactory, thePlaylist) {
+juke.controller("singlePlaylistCtrl", function($scope, $log, PlaylistFactory, thePlaylist, theSongs) {
 	$scope.playlist = thePlaylist;
+	$scope.allSongs = theSongs;
+
+	$scope.songSubmit = function () {
+		PlaylistFactory.addSong($scope.playlist.id, $scope.songSelector)
+		.then(function(song){
+			thePlaylist.songs.push(song);
+		});
+		$scope.songSelector = ""
+	}
+
 });
